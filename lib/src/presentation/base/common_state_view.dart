@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_clean_architecture/src/domain/annotation/exception_type.dart';
 import 'package:flutter_clean_architecture/src/domain/exception/alert_exception.dart';
 import 'package:flutter_clean_architecture/src/domain/exception/base_exception.dart';
@@ -8,10 +6,12 @@ import 'package:flutter_clean_architecture/src/domain/exception/dialog_exception
 import 'package:flutter_clean_architecture/src/domain/exception/inline_exception.dart';
 import 'package:flutter_clean_architecture/src/domain/exception/redirect_exception.dart';
 import 'package:flutter_clean_architecture/src/domain/exception/snack_bar_exception.dart';
+import 'package:flutter_clean_architecture/src/presentation/ui/extension/build_context.dart';
 import 'package:flutter_clean_architecture/src/presentation/ui/widget/custom_dialog.dart';
 import 'package:flutter_clean_architecture/src/presentation/ui/widget/error_page.dart';
 import 'package:flutter_clean_architecture/src/presentation/ui/widget/loading.dart';
-import 'package:flutter_clean_architecture/src/presentation/ui/extension/build_context.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CommonStateView<T> extends HookWidget {
   final AsyncValue<T> _asyncValue;
@@ -66,19 +66,19 @@ class CommonStateView<T> extends HookWidget {
 
             case ExceptionType.snack:
               final exception = error as SnackBarException;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance?.addPostFrameCallback((_) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(exception.message)));
               });
 
               return const SizedBox();
 
             case ExceptionType.toast:
-              WidgetsBinding.instance.addPostFrameCallback((_) {});
+              WidgetsBinding.instance?.addPostFrameCallback((_) {});
               return const SizedBox();
 
             case ExceptionType.dialog:
               final exception = error as DialogException;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance?.addPostFrameCallback((_) {
                 CustomDialog(
                   context: context,
                   title: exception.dialog.title ?? '',
@@ -104,7 +104,7 @@ class CommonStateView<T> extends HookWidget {
 
             case ExceptionType.alert:
               final exception = error as AlertException;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance?.addPostFrameCallback((_) {
                 CustomDialog(
                   context: context,
                   title: exception.title ?? '',
